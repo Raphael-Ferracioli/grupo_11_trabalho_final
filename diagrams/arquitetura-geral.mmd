@@ -1,0 +1,7 @@
+flowchart LR
+    U[Usuário / Navegador] -->|HTTP| W[Camada Web\nViews + Templates]
+    W --> S[Serviços de Aplicação\nRegras de negócio]
+    S --> R[Repositórios\nORM Django]
+    R --> DB[(Banco de Dados\nSQLite/PostgreSQL)]
+    A[Administração\nDjango Admin] --> DB
+    S --> M[Módulos\nFilmes, Avaliações, Favoritos, Usuários]

@@ -1,0 +1,37 @@
+classDiagram
+    class RecommendationStrategy {
+        <<interface>>
+        +recommend(usuario)
+    }
+
+    class GeneroRecommendationStrategy {
+        +recommend(usuario)
+    }
+
+    class PopularidadeRecommendationStrategy {
+        +recommend(usuario)
+    }
+
+    class RecommendationCreator {
+        <<abstract>>
+        +create_strategy()
+        +recomendar(usuario)
+    }
+
+    class FilmeFacade {
+        +detalhar_filme(usuario, filme_id)
+    }
+
+    class FilmeRepository {
+        +buscar_por_id(filme_id)
+    }
+
+    class AvaliacaoRepository {
+        +media_do_filme(filme)
+    }
+
+    RecommendationStrategy <|.. GeneroRecommendationStrategy
+    RecommendationStrategy <|.. PopularidadeRecommendationStrategy
+    RecommendationCreator ..> RecommendationStrategy
+    FilmeFacade --> FilmeRepository
+    FilmeFacade --> AvaliacaoRepository

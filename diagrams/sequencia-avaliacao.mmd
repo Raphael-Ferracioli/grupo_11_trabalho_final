@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor Usuario
+    participant View as View Django
+    participant Service as AvaliacaoService
+    participant Repo as Repository/ORM
+    participant DB as Banco de Dados
+
+    Usuario->>View: POST /filmes/{id}/avaliar
+    View->>Service: avaliar_filme(usuario, filme, nota, comentario)
+    Service->>Repo: salvar ou atualizar avaliação
+    Repo->>DB: INSERT/UPDATE
+    DB-->>Repo: confirmação
+    Repo-->>Service: avaliação persistida
+    Service-->>View: resultado
+    View-->>Usuario: redireciona com mensagem

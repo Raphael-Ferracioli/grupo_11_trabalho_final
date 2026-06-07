@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: GoodFilms API
+  version: 1.0.0
+  description: API REST versionada para catálogo, avaliações e favoritos de filmes.
+servers:
+  - url: /api/v1
+paths:
+  /filmes/:
+    get:
+      summary: Lista filmes cadastrados
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: genero
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista paginada de filmes
+  /filmes/{id}/:
+    get:
+      summary: Detalha um filme
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Filme encontrado
+        '404':
+          description: Filme não encontrado
+  /filmes/{id}/avaliacoes/:
+    post:
+      summary: Cria ou atualiza avaliação do usuário autenticado
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nota
+              properties:
+                nota:
+                  type: number
+                  minimum: 0
+                  maximum: 5
+                comentario:
+                  type: string
+      responses:
+        '201':
+          description: Avaliação registrada
+        '400':
+          description: Dados inválidos
+        '401':
+          description: Usuário não autenticado
+  /filmes/{id}/favoritos/:
+    post:
+      summary: Marca filme como favorito
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Favorito criado
+    delete:
+      summary: Remove filme dos favoritos
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Favorito removido
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

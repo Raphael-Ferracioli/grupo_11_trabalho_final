@@ -1,0 +1,10 @@
+flowchart TB
+    A[Apresentação\nurls.py, views.py, templates HTML]
+    B[Aplicação\nservices.py / use cases]
+    C[Domínio\nmodels.py / entidades]
+    D[Infraestrutura\nORM Django, migrations, banco de dados]
+
+    A --> B
+    B --> C
+    B --> D
+    D --> C
