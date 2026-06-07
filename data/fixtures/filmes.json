@@ -1,0 +1,50 @@
+[
+  {
+    "model": "filmes.filme",
+    "pk": 1,
+    "fields": {
+      "titulo": "Matrix",
+      "titulo_original": "The Matrix",
+      "ano_lancamento": 1999,
+      "diretor": "Lana Wachowski, Lilly Wachowski",
+      "genero": "Ficção científica",
+      "duracao_minutos": 136,
+      "sinopse": "Um programador descobre que a realidade em que vive é uma simulação.",
+      "poster": "",
+      "total_visualizacoes": 0,
+      "data_cadastro": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "filmes.filme",
+    "pk": 2,
+    "fields": {
+      "titulo": "Interestelar",
+      "titulo_original": "Interstellar",
+      "ano_lancamento": 2014,
+      "diretor": "Christopher Nolan",
+      "genero": "Ficção científica",
+      "duracao_minutos": 169,
+      "sinopse": "Exploradores viajam pelo espaço em busca de um novo lar para a humanidade.",
+      "poster": "",
+      "total_visualizacoes": 0,
+      "data_cadastro": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "filmes.filme",
+    "pk": 3,
+    "fields": {
+      "titulo": "O Senhor dos Anéis: A Sociedade do Anel",
+      "titulo_original": "The Lord of the Rings: The Fellowship of the Ring",
+      "ano_lancamento": 2001,
+      "diretor": "Peter Jackson",
+      "genero": "Fantasia",
+      "duracao_minutos": 178,
+      "sinopse": "Um grupo parte em uma missão para destruir um anel poderoso.",
+      "poster": "",
+      "total_visualizacoes": 0,
+      "data_cadastro": "2026-01-01T00:00:00Z"
+    }
+  }
+]

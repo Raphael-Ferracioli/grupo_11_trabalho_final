@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}GoodFilms{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f6f6f6; color: #222; }
+        header { background: #111827; color: white; padding: 16px 32px; }
+        nav a { color: white; margin-right: 16px; text-decoration: none; }
+        main { max-width: 1000px; margin: 24px auto; background: white; padding: 24px; border-radius: 8px; }
+        .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .messages { padding: 0; list-style: none; }
+        .messages li { padding: 8px; background: #e8f2ff; margin-bottom: 8px; border-radius: 4px; }
+        button, .button { background: #111827; color: white; padding: 8px 12px; border: 0; border-radius: 4px; text-decoration: none; cursor: pointer; }
+        input, textarea { width: 100%; padding: 8px; margin: 4px 0 12px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>GoodFilms</h1>
+    <nav>
+        <a href="{% url 'dashboard:home' %}">Dashboard</a>
+        <a href="{% url 'filmes:listar' %}">Filmes</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'usuarios:perfil' %}">Perfil</a>
+            <a href="/admin/logout/">Sair</a>
+        {% else %}
+            <a href="/admin/login/">Entrar</a>
+        {% endif %}
+    </nav>
+</header>
+<main>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

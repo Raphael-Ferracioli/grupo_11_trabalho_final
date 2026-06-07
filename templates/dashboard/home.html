@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - GoodFilms{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<p>Total de filmes cadastrados: <strong>{{ total_filmes }}</strong></p>
+<p>Favoritos do usuário: <strong>{{ total_favoritos }}</strong></p>
+<p>Avaliações do usuário: <strong>{{ total_avaliacoes }}</strong></p>
+
+<h3>Filmes populares</h3>
+{% for filme in filmes_populares %}
+    <div class="card">
+        <h4><a href="{% url 'filmes:detalhar' filme.id %}">{{ filme.titulo }}</a></h4>
+        <p>{{ filme.genero }}{% if filme.ano_lancamento %} • {{ filme.ano_lancamento }}{% endif %}</p>
+    </div>
+{% empty %}
+    <p>Nenhum filme cadastrado ainda.</p>
+{% endfor %}
+
+<h3>Recomendações</h3>
+{% for filme in recomendacoes %}
+    <div class="card">
+        <a href="{% url 'filmes:detalhar' filme.id %}">{{ filme.titulo }}</a>
+    </div>
+{% empty %}
+    <p>Sem recomendações por enquanto.</p>
+{% endfor %}
+{% endblock %}

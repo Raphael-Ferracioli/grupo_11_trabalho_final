@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil - GoodFilms{% endblock %}
+
+{% block content %}
+<h2>Perfil de {{ user.username }}</h2>
+
+<h3>Favoritos</h3>
+{% for favorito in favoritos %}
+    <div class="card">
+        <a href="{% url 'filmes:detalhar' favorito.filme.id %}">{{ favorito.filme.titulo }}</a>
+    </div>
+{% empty %}
+    <p>Nenhum favorito cadastrado.</p>
+{% endfor %}
+
+<h3>Avaliações</h3>
+{% for avaliacao in avaliacoes %}
+    <div class="card">
+        <strong>{{ avaliacao.filme.titulo }}</strong> — Nota {{ avaliacao.nota }}<br>
+        {{ avaliacao.comentario }}
+    </div>
+{% empty %}
+    <p>Nenhuma avaliação cadastrada.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Filmes - GoodFilms{% endblock %}
+
+{% block content %}
+<h2>Filmes</h2>
+
+<form method="get">
+    <label>Buscar por título</label>
+    <input type="text" name="q" value="{{ request.GET.q }}">
+    <label>Filtrar por gênero</label>
+    <input type="text" name="genero" value="{{ request.GET.genero }}">
+    <button type="submit">Filtrar</button>
+</form>
+
+{% for filme in page_obj %}
+    <div class="card">
+        <h3><a href="{% url 'filmes:detalhar' filme.id %}">{{ filme.titulo }}</a></h3>
+        <p>{{ filme.genero }}{% if filme.ano_lancamento %} • {{ filme.ano_lancamento }}{% endif %}</p>
+        <p>{{ filme.sinopse|truncatewords:30 }}</p>
+    </div>
+{% empty %}
+    <p>Nenhum filme encontrado.</p>
+{% endfor %}
+
+<p>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</p>
+{% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Anterior</a>{% endif %}
+{% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Próxima</a>{% endif %}
+{% endblock %}
