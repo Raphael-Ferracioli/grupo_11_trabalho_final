@@ -25,6 +25,12 @@ class FavoritoService:
         self.favorito_repository.criar(usuario, filme)
         return True
 
+    def favoritar(self, usuario, filme):
+        self.favorito_repository.criar(usuario, filme)
+
+    def desfavoritar(self, usuario, filme):
+        self.favorito_repository.remover(usuario, filme)
+
 
 class VisualizacaoService:
     def __init__(self, visualizacao_repository=None):
