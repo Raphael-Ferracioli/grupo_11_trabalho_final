@@ -27,6 +27,24 @@ paths:
       responses:
         '200':
           description: Lista paginada de filmes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Filme'
+                  page:
+                    type: integer
+                    example: 1
+                  total_pages:
+                    type: integer
+                    example: 5
+                  total_items:
+                    type: integer
+                    example: 47
   /filmes/{id}/:
     get:
       summary: Detalha um filme
@@ -39,8 +57,16 @@ paths:
       responses:
         '200':
           description: Filme encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Filme'
         '404':
           description: Filme não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
   /filmes/{id}/avaliacoes/:
     post:
       summary: Cria ou atualiza avaliação do usuário autenticado
@@ -65,13 +91,30 @@ paths:
                   type: number
                   minimum: 0
                   maximum: 5
+                  example: 4.5
                 comentario:
                   type: string
+                  example: Filme excelente, roteiro impecável.
       responses:
         '201':
           description: Avaliação registrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 12
+                  message:
+                    type: string
+                    example: Avaliação registrada.
         '400':
           description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
         '401':
           description: Usuário não autenticado
   /filmes/{id}/favoritos/:
@@ -88,6 +131,22 @@ paths:
       responses:
         '201':
           description: Favorito criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Filme favoritado.
+        '401':
+          description: Usuário não autenticado
+        '404':
+          description: Filme não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
     delete:
       summary: Remove filme dos favoritos
       security:
@@ -101,7 +160,56 @@ paths:
       responses:
         '204':
           description: Favorito removido
+        '401':
+          description: Usuário não autenticado
+        '404':
+          description: Filme não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
 components:
+  schemas:
+    Filme:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        titulo:
+          type: string
+          example: Matrix
+        titulo_original:
+          type: string
+          example: The Matrix
+        ano_lancamento:
+          type: integer
+          example: 1999
+        diretor:
+          type: string
+          example: Lana Wachowski
+        genero:
+          type: string
+          example: Ficção científica
+        duracao_minutos:
+          type: integer
+          example: 136
+        sinopse:
+          type: string
+          example: Um hacker descobre que a realidade é uma simulação.
+        poster:
+          type: string
+          format: uri
+          example: https://example.com/matrix.jpg
+        total_visualizacoes:
+          type: integer
+          example: 320
+    Erro:
+      type: object
+      properties:
+        error:
+          type: string
+          example: O campo "nota" é obrigatório.
   securitySchemes:
     cookieAuth:
       type: apiKey
