@@ -172,4 +172,3 @@ diagrams/
 - [x] Pasta `/diagrams` com fontes dos diagramas.
 - [x] API documentada em OpenAPI.
 - [x] Estrutura compatível com monolito modular.
-- [ ] Subir o repositório no GitHub e substituir o link no documento final.
