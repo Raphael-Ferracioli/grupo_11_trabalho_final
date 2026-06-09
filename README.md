@@ -56,8 +56,16 @@ goodfilms/
 
 Crie o ambiente virtual:
 
+Windows:
+
 ```bash
-python -m venv .venv
+python -m venv venv
+```
+
+Linux/macOS:
+
+```bash
+python3 -m venv venv
 ```
 
 Ative o ambiente virtual:
@@ -65,13 +73,13 @@ Ative o ambiente virtual:
 Windows:
 
 ```bash
-.venv\Scripts\activate
+venv\Scripts\activate
 ```
 
 Linux/macOS:
 
 ```bash
-source .venv/bin/activate
+source venv/bin/activate
 ```
 
 Instale as dependências:
@@ -80,23 +88,30 @@ Instale as dependências:
 pip install -r requirements.txt
 ```
 
-Execute as migrações:
+Gere e execute as migrações:
 
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
+1. **makemigrations**: Lê os arquivos `models.py` dos apps e gera os arquivos de migration (se a pasta `migrations/` não existir no app, o Django a cria automaticamente). 
+   ```bash
+   python manage.py makemigrations filmes
+   ```
+   *(Nota: Como os apps `usuarios` e `dashboard` não possuem modelos customizados em seu `models.py`, rodar `makemigrations` para eles não gerará novos arquivos).*
+
+2. **migrate**: Lê as migrations geradas e de fato cria as tabelas correspondentes no banco de dados (ex: SQLite).
+   ```bash
+   python manage.py migrate
+   ```
+
+3. **loaddata**: Popula o banco com os registros iniciais (filmes, avaliações, etc.). Este passo **precisa** que as tabelas já tenham sido criadas no banco pelo comando `migrate` anterior:
+   ```bash
+   python manage.py loaddata data/fixtures/filmes.json
+   ```
+
+*(Dica: Se preferir executar os comandos sem ativar explicitamente o venv, você pode referenciar o executável do Python diretamente pela pasta do ambiente virtual, por exemplo: `venv/bin/python manage.py ...` no Linux/macOS ou `venv\Scripts\python manage.py ...` no Windows).*
 
 Crie um superusuário:
 
 ```bash
 python manage.py createsuperuser
-```
-
-Carregue filmes de exemplo, se quiser:
-
-```bash
-python manage.py loaddata data/fixtures/filmes.json
 ```
 
 Inicie o servidor:
