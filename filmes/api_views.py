@@ -1,11 +1,14 @@
+import json
+
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_GET, require_http_methods
-from django.contrib.auth.decorators import login_required
+
 from .models import Filme
 from .services import AvaliacaoService, FavoritoService
-import json
 
 
 def filme_to_dict(filme):
@@ -53,13 +56,26 @@ def api_detalhar_filme(request, filme_id):
 @require_http_methods(['POST'])
 def api_avaliar_filme(request, filme_id):
     filme = get_object_or_404(Filme, id=filme_id)
-    payload = json.loads(request.body.decode('utf-8') or '{}')
-    avaliacao = AvaliacaoService().avaliar_filme(
-        usuario=request.user,
-        filme=filme,
-        nota=payload.get('nota'),
-        comentario=payload.get('comentario', ''),
-    )
+
+    try:
+        payload = json.loads(request.body.decode('utf-8') or '{}')
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'JSON inválido.'}, status=400)
+
+    nota = payload.get('nota')
+    if nota is None:
+        return JsonResponse({'error': 'O campo "nota" é obrigatório.'}, status=400)
+
+    try:
+        avaliacao = AvaliacaoService().avaliar_filme(
+            usuario=request.user,
+            filme=filme,
+            nota=nota,
+            comentario=payload.get('comentario', ''),
+        )
+    except (ValidationError, ValueError) as exc:
+        return JsonResponse({'error': str(exc)}, status=400)
+
     return JsonResponse({'id': avaliacao.id, 'message': 'Avaliação registrada.'}, status=201)
 
 
@@ -67,9 +83,11 @@ def api_avaliar_filme(request, filme_id):
 @require_http_methods(['POST', 'DELETE'])
 def api_favoritar_filme(request, filme_id):
     filme = get_object_or_404(Filme, id=filme_id)
+    service = FavoritoService()
+
     if request.method == 'DELETE':
-        FavoritoService().favorito_repository.remover(request.user, filme)
+        service.desfavoritar(request.user, filme)
         return JsonResponse({}, status=204)
 
-    FavoritoService().favorito_repository.criar(request.user, filme)
+    service.favoritar(request.user, filme)
     return JsonResponse({'message': 'Filme favoritado.'}, status=201)

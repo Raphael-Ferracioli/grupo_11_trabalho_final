@@ -12,26 +12,58 @@ classDiagram
         +recommend(usuario)
     }
 
+    class FilmesRecentesRecommendationStrategy {
+        +recommend(usuario)
+    }
+
     class RecommendationCreator {
         <<abstract>>
-        +create_strategy()
+        +create_strategy() RecommendationStrategy
         +recomendar(usuario)
+    }
+
+    class GeneroRecommendationCreator {
+        +create_strategy() RecommendationStrategy
+    }
+
+    class PopularidadeRecommendationCreator {
+        +create_strategy() RecommendationStrategy
+    }
+
+    class RecentesRecommendationCreator {
+        +create_strategy() RecommendationStrategy
+    }
+
+    class RecommendationCreatorFactory {
+        +criar(criterio) RecommendationCreator
     }
 
     class FilmeFacade {
         +detalhar_filme(usuario, filme_id)
     }
 
-    class FilmeRepository {
+    class DjangoFilmeRepository {
+        +listar()
         +buscar_por_id(filme_id)
+        +salvar(filme)
+        +remover(filme_id)
     }
 
     class AvaliacaoRepository {
+        +salvar_ou_atualizar(usuario, filme, nota, comentario)
         +media_do_filme(filme)
     }
 
     RecommendationStrategy <|.. GeneroRecommendationStrategy
     RecommendationStrategy <|.. PopularidadeRecommendationStrategy
-    RecommendationCreator ..> RecommendationStrategy
-    FilmeFacade --> FilmeRepository
+    RecommendationStrategy <|.. FilmesRecentesRecommendationStrategy
+
+    RecommendationCreator <|-- GeneroRecommendationCreator
+    RecommendationCreator <|-- PopularidadeRecommendationCreator
+    RecommendationCreator <|-- RecentesRecommendationCreator
+
+    RecommendationCreator ..> RecommendationStrategy : creates
+    RecommendationCreatorFactory ..> RecommendationCreator : creates
+
+    FilmeFacade --> DjangoFilmeRepository
     FilmeFacade --> AvaliacaoRepository
