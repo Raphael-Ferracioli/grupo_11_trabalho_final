@@ -1,7 +1,11 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Carrega variáveis de ambiente do arquivo .env se ele existir
+load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-goodfilms-dev-key')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
