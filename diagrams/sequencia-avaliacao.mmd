@@ -6,10 +6,10 @@ sequenceDiagram
     participant DB as Banco de Dados
 
     Usuario->>View: POST /filmes/{id}/avaliar
-    View->>Service: avaliar_filme(usuario, filme, nota, comentario)
-    Service->>Repo: salvar ou atualizar avaliação
+    View->>Service: avaliar_filme(usuario, filme, nota, comentario) (validar formulário)
+    Service->>Repo: salvar ou atualizar avaliação (salvar/atualizar avaliação)
     Repo->>DB: INSERT/UPDATE
     DB-->>Repo: confirmação
     Repo-->>Service: avaliação persistida
-    Service-->>View: resultado
-    View-->>Usuario: redireciona com mensagem
+    Service-->>View: resultado (resultado + mensagem)
+    View-->>Usuario: redireciona com mensagem (redireciona para detalhe)
